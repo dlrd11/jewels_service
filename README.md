@@ -28,3 +28,10 @@ jewels_service/
 └── requirements.txt
 
 ````
+
+### Project Structure
+user: user
+password: user123456
+
+### Project Runner
+python manage.py runserver 0.0.0.0:8081
