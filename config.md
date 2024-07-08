@@ -15,3 +15,27 @@ Add Installed Apps
 
     
 ******************
+jewels_service/jewels/serializers.py
+jewels_service/jewels/urls.py
+jewels_service/settings.py
+
+
+jewels_service/jewels/models.py
+jewels_service/jewels/serializers.py
+jewels_service/jewels/urls.py
+jewels_service/jewels/views.py
+jewels_service/jewels_service/urls.py
+************************
+Hacer las migraciones
+    python manage.py makemigrations
+    python manage.py migrate
+*********************
+
+create a superuser
+    python manage.py createsuperuser
+
+
+*****************
+Add JWT Settings:
+Add JWT settings to jewels_service/settings.py
+
