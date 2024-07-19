@@ -1,35 +1,31 @@
-from rest_framework import generics, permissions
+from rest_framework import generics, permissions, status
+from rest_framework.exceptions import AuthenticationFailed
+from rest_framework.response import Response
+
+from .authentication import CustomJWTAuthentication
 from .models import Jewel
+from .permissions import CustomAuthenticatedOrReadOnly
 from .serializers import JewelSerializer
-from rest_framework.permissions import IsAuthenticatedOrReadOnly
 from .utils import verify_token
 
-class JewelListCreateView(generics.ListCreateAPIView):
+
+class JewelView(generics.ListCreateAPIView):
     queryset = Jewel.objects.all()
     serializer_class = JewelSerializer
+    # permission_classes = [permissions.IsAuthenticatedOrReadOnly]
+    permission_classes = [CustomAuthenticatedOrReadOnly]
+    authentication_classes = [CustomJWTAuthentication]
 
-    def get_permissions(self):
-        if self.request.method == 'GET':
-            token = self.request.headers.get('Authorization', '').split('Bearer ')[-1]
-            if token and verify_token(token):
-                self.permission_classes = [permissions.IsAuthenticated]
-            else:
-                self.permission_classes = [permissions.AllowAny]
-        else:
-            self.permission_classes = [IsAuthenticatedOrReadOnly]
-        return super().get_permissions()
+    def get(self, request, pk=None, *args, **kwargs):
 
-class JewelDetailView(generics.RetrieveUpdateDestroyAPIView):
-    queryset = Jewel.objects.all()
-    serializer_class = JewelSerializer
+        if not pk:
+            return self.list(request, *args, **kwargs)
+        instance = self.get_object()
+        serializer = self.get_serializer(instance)
+        return Response(serializer.data)
 
-    def get_permissions(self):
-        if self.request.method == 'GET':
-            token = self.request.headers.get('Authorization', '').split('Bearer ')[-1]
-            if token and verify_token(token):
-                self.permission_classes = [permissions.IsAuthenticated]
-            else:
-                self.permission_classes = [permissions.AllowAny]
-        else:
-            self.permission_classes = [IsAuthenticatedOrReadOnly]
-        return super().get_permissions()
+    def post(self, request, *args, **kwargs):
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+        return Response(serializer.data, status=status.HTTP_201_CREATED)
