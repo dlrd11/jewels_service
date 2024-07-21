@@ -1,0 +1,7 @@
+Django
+djangorestframework
+djangorestframework-simplejwt
+requests
+pytest
+pytest-django
+drf-yasg
