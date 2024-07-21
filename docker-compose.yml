@@ -1,0 +1,30 @@
+version: '3.8'
+
+services:
+  auth_service:
+    build:
+      context: ./auth_service
+    container_name: auth_service
+    ports:
+      - "8000:8000"
+    env_file:
+      - .env
+    networks:
+      - app-network
+
+  jewels_service:
+    build:
+      context: ./jewels_service
+    container_name: jewels_service
+    ports:
+      - "8081:8081"
+    depends_on:
+      - auth_service
+    env_file:
+      - .env
+    networks:
+      - app-network
+
+networks:
+  app-network:
+    driver: bridge

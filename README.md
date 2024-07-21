@@ -60,7 +60,13 @@ password: user123456
    python manage.py migrate
 
 ## Project Runner
-python manage.py runserver 0.0.0.0:8081
+   ```bash
+      python manage.py runserver 0.0.0.0:8081
+  ```
+### Executing with Docker 
+   ```bash
+      docker-compose up --build
+   ```
 
 
 ## API Documentation
