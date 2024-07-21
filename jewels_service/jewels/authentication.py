@@ -22,7 +22,6 @@ class CustomJWTAuthentication(JWTAuthentication):
         return user_data, raw_token
 
     def verify_external_token(self, raw_token):
-        breakpoint()
         try:
             user_data = verify_token(raw_token)
             return user_data

@@ -19,7 +19,9 @@ jewels_service/
 │   ├── __init__.py
 │   ├── admin.py
 │   ├── apps.py
+│   ├── authentication.py
 │   ├── models.py
+|   ├── permissions.py
 │   ├── serializers.py
 │   ├── urls.py
 │   ├── views.py
@@ -50,3 +52,7 @@ test_create_jewel_without_token: Tests creating a jewel without a token (should 
 Mocking:
 
 @patch('jewels.utils.verify_token'): Mocks the verify_token function to simulate token verification without making actual HTTP requests to the auth_service.
+
+## Swagger
+Swagger UI: http://localhost:8000/swagger/
+Redoc UI: http://localhost:8000/redoc/
