@@ -1,12 +1,11 @@
-from rest_framework import generics, permissions, status
-from rest_framework.exceptions import AuthenticationFailed
+from drf_yasg.utils import swagger_auto_schema
+from rest_framework import generics, status
 from rest_framework.response import Response
 
 from .authentication import CustomJWTAuthentication
 from .models import Jewel
 from .permissions import CustomAuthenticatedOrReadOnly
 from .serializers import JewelSerializer
-from .utils import verify_token
 
 
 class JewelView(generics.ListCreateAPIView):
@@ -16,6 +15,10 @@ class JewelView(generics.ListCreateAPIView):
     permission_classes = [CustomAuthenticatedOrReadOnly]
     authentication_classes = [CustomJWTAuthentication]
 
+    @swagger_auto_schema(
+        operation_description="Retrieve all jewels",
+        responses={200: JewelSerializer(many=True)},
+    )
     def get(self, request, pk=None, *args, **kwargs):
 
         if not pk:
@@ -24,6 +27,11 @@ class JewelView(generics.ListCreateAPIView):
         serializer = self.get_serializer(instance)
         return Response(serializer.data)
 
+    @swagger_auto_schema(
+        operation_description="Create a new jewel",
+        request_body=JewelSerializer,
+        responses={201: JewelSerializer}
+    )
     def post(self, request, *args, **kwargs):
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
