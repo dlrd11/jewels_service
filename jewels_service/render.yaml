@@ -1,0 +1,14 @@
+services:
+  - type: web
+    name: jewels-service
+    env: docker
+    repo: https://github.com/tu-usuario/jewels_service
+    branch: main
+    dockerfilePath: ./Dockerfile
+    buildCommand: ""
+    startCommand: "python manage.py runserver 0.0.0.0:8081"
+    envVars:
+      - key: SECRET_KEY
+        value: your_secret_key
+      - key: DATABASE_URL
+        value: sqlite:///./test.db
